@@ -1,6 +1,6 @@
 import React from 'react';
 
-import WeatherContainer from './container/Weather/WeatherContainer';
+import { WeatherContainer } from './container/Weather';
 
 const App = () => (
     <div className="container">
