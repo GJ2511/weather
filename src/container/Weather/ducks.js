@@ -1,4 +1,5 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
+import { createSelector } from 'reselect';
 
 import WeatherService from '../../services/weatherService';
 
@@ -6,7 +7,7 @@ const initialState = {
     loading: false,
     weather: {},
     cards: [],
-    error: {},
+    error: false,
 };
 
 const PREFIX = 'WEATHER';
@@ -15,7 +16,14 @@ const GET_WEATHER_SUCCESS = `${PREFIX}//GET_WEATHER_SUCCESS`;
 const GET_WEATHER_ERROR = `${PREFIX}//GET_WEATHER_ERROR`;
 const RESET = `${PREFIX}//RESET`;
 
-const dataFormatter = ({ list }) => {
+export const actionTypes = {
+    GET_WEATHER_REQUESTED,
+    GET_WEATHER_SUCCESS,
+    GET_WEATHER_ERROR,
+    RESET,
+};
+
+export const dataFormatter = ({ list }) => {
     let weather = {};
 
     list.forEach((data) => {
@@ -56,10 +64,15 @@ const weatherReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 loading: false,
-                error: {},
+                error: false,
                 ...dataFormatter(payload),
             };
         case GET_WEATHER_ERROR:
+            return {
+                ...state,
+                ...initialState,
+                error: true,
+            };
         case RESET:
             return {
                 ...initialState,
@@ -69,11 +82,23 @@ const weatherReducer = (state = initialState, action = {}) => {
     }
 };
 
-export const getState = (state) => state && state.weatherReducer;
+export const getState = (state) => state && state.weather;
 export const getWeatherRequest = () => ({ type: GET_WEATHER_REQUESTED });
 export const reset = () => ({ type: RESET });
 
-function* getWeather() {
+export const selectWeatherData = createSelector([getState], (state) => state.weather);
+export const selectCardsData = createSelector([getState], (state) => state.cards);
+export const selectError = createSelector([getState], (state) => state.error);
+export const selectLoading = createSelector([getState], (state) => state.loading);
+
+export const selectors = {
+    selectWeatherData,
+    selectCardsData,
+    selectError,
+    selectLoading,
+};
+
+export function* getWeather() {
     try {
         // const response = yield call([WeatherService, 'getWeather'], {
         //     q: 'Munich,de',
@@ -1547,7 +1572,7 @@ function* getWeather() {
         };
 
         if (response.errors) {
-            yield put({ type: GET_WEATHER_ERROR, payload: response.errors });
+            yield put({ type: GET_WEATHER_ERROR });
         } else {
             yield put({
                 type: GET_WEATHER_SUCCESS,
@@ -1555,12 +1580,8 @@ function* getWeather() {
             });
         }
     } catch (error) {
-        console.log(error);
         yield put({
             type: GET_WEATHER_ERROR,
-            payload: {
-                Error: ['Something went wrong'],
-            },
         });
     }
 }

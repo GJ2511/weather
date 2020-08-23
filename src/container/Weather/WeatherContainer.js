@@ -7,8 +7,9 @@ import { Radio } from '../../component/Radio';
 import { Arrow } from '../../component/Arrow';
 import { Card } from '../../component/Card';
 import { Chart } from '../../component/Chart';
+import { ErrorPage } from '../../component/Error';
 
-import { reset, getWeatherRequest } from './ducks';
+import { reset, getWeatherRequest, selectWeatherData, selectCardsData, selectError, selectLoading } from './ducks';
 
 class WeatherContainer extends Component {
     state = {
@@ -57,7 +58,7 @@ class WeatherContainer extends Component {
     };
 
     render() {
-        const { loading, cards, weatherData } = this.props;
+        const { loading, cards, weatherData, error } = this.props;
         const { unit, startIndex, endIndex, selectDate } = this.state;
 
         if (loading) {
@@ -66,6 +67,10 @@ class WeatherContainer extends Component {
                     <Loader />
                 </div>
             );
+        }
+
+        if (error) {
+            return <ErrorPage />;
         }
 
         const dates =
@@ -129,18 +134,18 @@ WeatherContainer.propTypes = {
             AvgFarenhite: PropTypes.number,
         })
     ).isRequired,
-    error: PropTypes.object.isRequired,
+    error: PropTypes.bool.isRequired,
     getWeatherRequest: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     reset: PropTypes.func.isRequired,
     weatherData: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({ weather }) => ({
-    cards: weather.cards,
-    weatherData: weather.weather,
-    error: weather.error,
-    loading: weather.loading,
+const mapStateToProps = (state) => ({
+    cards: selectCardsData(state),
+    weatherData: selectWeatherData(state),
+    error: selectError(state),
+    loading: selectLoading(state),
 });
 
 export default connect(mapStateToProps, { reset, getWeatherRequest })(WeatherContainer);
