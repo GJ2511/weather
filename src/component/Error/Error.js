@@ -1,7 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-const ErrorPage = () => (
-    <div className="container">
+const ErrorPage = ({ classes }) => (
+    <div
+        className={classNames('container ', {
+            classes,
+        })}
+    >
         <div className="row">
             <div className="col-md-12">
                 <div className="error-template">
@@ -15,5 +21,13 @@ const ErrorPage = () => (
         </div>
     </div>
 );
+
+ErrorPage.propTypes = {
+    classes: PropTypes.string,
+};
+
+ErrorPage.defaultProps = {
+    classes: '',
+};
 
 export default ErrorPage;

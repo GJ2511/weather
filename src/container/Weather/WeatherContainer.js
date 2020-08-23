@@ -11,7 +11,7 @@ import { ErrorPage } from '../../component/Error';
 
 import { reset, getWeatherRequest, selectWeatherData, selectCardsData, selectError, selectLoading } from './ducks';
 
-class WeatherContainer extends Component {
+export class WeatherContainer extends Component {
     state = {
         unit: 'Celcius',
         startIndex: 0,
@@ -62,15 +62,11 @@ class WeatherContainer extends Component {
         const { unit, startIndex, endIndex, selectDate } = this.state;
 
         if (loading) {
-            return (
-                <div className="mt-5">
-                    <Loader />
-                </div>
-            );
+            return <Loader classes="mt-5" />;
         }
 
         if (error) {
-            return <ErrorPage />;
+            return <ErrorPage classes="mt-5" />;
         }
 
         const dates =
@@ -85,7 +81,7 @@ class WeatherContainer extends Component {
                       });
 
         return (
-            <div className="m-1 p-1">
+            <div className="m-1 p-1 weather-container">
                 <div className="row mt-5">
                     <div className="col-2">
                         <Radio unit={unit} value="Celcius" handleChange={this.onTemperatureChange} />
@@ -141,7 +137,7 @@ WeatherContainer.propTypes = {
     weatherData: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
+export const mapStateToProps = (state) => ({
     cards: selectCardsData(state),
     weatherData: selectWeatherData(state),
     error: selectError(state),
