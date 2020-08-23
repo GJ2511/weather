@@ -5,7 +5,7 @@ const Radio = ({ value, unit, handleChange }) => {
     return (
         <>
             <input
-                className="form-check-input  hover-hand"
+                className="form-check-input hover-hand"
                 type="radio"
                 value={value}
                 checked={unit === value}

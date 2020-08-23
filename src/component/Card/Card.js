@@ -18,10 +18,12 @@ const Card = ({ cards, unit, startIndex, endIndex, handleClick, selectDate }) =>
                         <div className={cardClasses} key={card.d} onClick={() => handleClick(card.d)}>
                             <div className="card-body">
                                 <p>
-                                    Temp: {card[`Avg${unit}`].toFixed(2)}
+                                    <strong>Temp:</strong> {card[`Avg${unit}`].toFixed(2)}
                                     {unitPostFix}
                                 </p>
-                                <p>Date: {card.d}</p>
+                                <p>
+                                    <strong>Date:</strong> {card.d}
+                                </p>
                             </div>
                         </div>
                     );

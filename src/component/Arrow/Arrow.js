@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const Arrow = ({ direction, handleClick, children }) => {
     return (
-        <span className="text-primary font-size-70 hover-hand" onClick={() => handleClick(direction)}>
+        <span className="arrow text-primary font-size-70 hover-hand" onClick={() => handleClick(direction)}>
             {children}
         </span>
     );

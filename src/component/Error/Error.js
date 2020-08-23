@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 const ErrorPage = ({ classes }) => (
     <div
-        className={classNames('container ', {
+        className={classNames('error-container ', {
             classes,
         })}
     >
