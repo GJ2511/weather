@@ -1,7 +1,4 @@
 import { WEATHER_URL, API_KEY } from './constant';
-const headers = {
-    'Content-Type': 'application/json;charset=utf-8',
-};
 
 class WeatherService {
     async getWeather(params = {}) {
@@ -11,7 +8,7 @@ class WeatherService {
             url += `${param}=${params[param]}&`;
         }
 
-        const response = await fetch(url, { headers });
+        const response = await fetch(url);
         const result = await response.json();
 
         return result;
